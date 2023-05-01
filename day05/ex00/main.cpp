@@ -11,11 +11,11 @@ int main()
             Bureaucrat obama;
             std::cout << "the code continues after construction" << std::endl;
         }
-        catch(const Bureaucrat::GradeTooLow& e)
+        catch(const Bureaucrat::GradeTooLowException& e)
         {
             std::cerr << e.what() << '\n';
         }
-        catch(const Bureaucrat::GradeTooHigh& e)
+        catch(const Bureaucrat::GradeTooHighException& e)
         {
             std::cerr << e.what() << '\n';
         }
@@ -27,11 +27,11 @@ int main()
         {
             Bureaucrat obama(151);
         }
-        catch(const Bureaucrat::GradeTooLow& e)
+        catch(const Bureaucrat::GradeTooLowException& e)
         {
             std::cerr << e.what() << '\n';
         }
-        catch(const Bureaucrat::GradeTooHigh& e)
+        catch(const Bureaucrat::GradeTooHighException& e)
         {
             std::cerr << e.what() << '\n';
         }
@@ -45,11 +45,11 @@ int main()
             obama.inc_gr();
             std::cout << "this wont be printed." << std::endl;
         }
-        catch(const Bureaucrat::GradeTooLow& e)
+        catch(const Bureaucrat::GradeTooLowException& e)
         {
             std::cerr << e.what() << '\n';
         }
-        catch(const Bureaucrat::GradeTooHigh& e)
+        catch(const Bureaucrat::GradeTooHighException& e)
         {
             std::cerr << e.what() << '\n';
         }

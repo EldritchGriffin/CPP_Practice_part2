@@ -54,3 +54,17 @@ const std::string Bureaucrat::get_name() const
 {
     return this->name;
 }
+
+void    Bureaucrat::signForm(Form& form)
+{
+    try
+    {
+        form.beSigned(*this);
+        std::cout << this->name << " Signed " << form.get_name() << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << this->name << " couldn't sign " << form.get_name() << " because " << e.what() << std::endl;
+    }
+    
+}
