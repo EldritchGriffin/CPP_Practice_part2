@@ -15,8 +15,8 @@ int main()
     b.signForm(form2);
     ShrubberyCreationForm form3("Bender");
     b.signForm(form3);
-    form.execute(b);
-    form2.execute(b);
-    form3.execute(b);
+    b.executeForm(form);
+    b.executeForm(form2);
+    b.executeForm(form3);
     return (0);
 }
