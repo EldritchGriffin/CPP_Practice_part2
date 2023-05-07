@@ -25,7 +25,7 @@ int main()
     {
         try
         {
-            Bureaucrat obama(151);
+            Bureaucrat obama("obama", 151);
         }
         catch(const Bureaucrat::GradeTooLowException& e)
         {
@@ -40,7 +40,7 @@ int main()
     {
         try
         {
-            Bureaucrat obama(1);
+            Bureaucrat obama("obama", 1);
             std::cout << obama.get_grade() << std::endl;
             obama.inc_gr();
             std::cout << "this wont be printed." << std::endl;

@@ -1,4 +1,4 @@
-NAME:=formforest
+NAME:=internship
 SRCS:= *.cpp
 HEADERS:= *.hpp
 CFLAGS:= -Wall -Wextra -Werror -std=c++98
