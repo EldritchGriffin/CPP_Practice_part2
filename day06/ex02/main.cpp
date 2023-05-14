@@ -24,6 +24,8 @@ void identify_from_pointer(Base * p)
         std::cout << "Pointer type is of ClassB" << std::endl;
     else if (dynamic_cast<ClassC *>(p))
         std::cout << "Pointer type is of ClassC" << std::endl;
+    else
+        std::cerr << "Error: " << "Impossible cast" << std::endl;
 }
 
 void identify_from_reference(Base & p)
