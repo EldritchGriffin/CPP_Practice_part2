@@ -79,12 +79,28 @@ void    BitcoinExchange::readData()
         std::cout << "Unable to open file" << std::endl;
 }
 
+bool isLeapYear(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
 bool    BitcoinExchange::isDateValid(std::string date)
 {
     int i = 0;
+    int y, m, d;
 
-    if(date.length() != 10)
-        return (false);
+     if (date.length() != 10)
+        return false;
+
+    y = std::atoi(date.substr(0, 4).c_str());
+    m = std::atoi(date.substr(5, 2).c_str());
+    d = std::atoi(date.substr(8, 2).c_str());
+
+    if (m < 1 || m > 12 || d < 1)
+        return false;
+
+    int daysInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+
     if (date[4] != '-' || date[7] != '-')
         return (false);
     while(date[i])
@@ -96,7 +112,11 @@ bool    BitcoinExchange::isDateValid(std::string date)
         }
         i++;
     }
-    return (true);
+    if (isLeapYear(y))
+        daysInMonth[1] = 29;
+    std::cout << daysInMonth[m - 1] << std::endl;
+
+    return (d <= daysInMonth[m - 1]);
 }
 
 bool    BitcoinExchange::isPriceValid(std::string price)
@@ -113,6 +133,11 @@ bool    BitcoinExchange::isPriceValid(std::string price)
     if (p > 1000)
     {
         std::cout << "Error: too large a number." << std::endl;
+        return (false);
+    }
+    if(price[0] == '.' || price[price.length() - 1]  == '.')
+    {
+        std::cout << "Error: Invalid value." << std::endl;
         return (false);
     }
     while (price[i])
@@ -165,7 +190,7 @@ void    BitcoinExchange::run(std::string inputfile)
             date = line.substr(0, pos - 1);
             if(isDateValid(date) == false)
             {
-                std::cout << "Invalid date in inputfile" << std::endl;
+                std::cout << "Error: bad input => " << date << std::endl;
                 continue ;
             }
             line.erase(0, pos + delimiter.length());
