@@ -19,6 +19,7 @@ class BitcoinExchange
         void    run(std::string inputfile);
         bool    isDateValid(std::string date);
         bool    isPriceValid(std::string price);
+        bool    isLeapYear(int year);
         void    result(std::string date, double value);
     public:
         BitcoinExchange();

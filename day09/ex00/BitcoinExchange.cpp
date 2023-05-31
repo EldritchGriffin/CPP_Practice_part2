@@ -79,28 +79,26 @@ void    BitcoinExchange::readData()
         std::cout << "Unable to open file" << std::endl;
 }
 
-bool isLeapYear(int year) {
-    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+bool    BitcoinExchange::isLeapYear(int year)
+{
+    if (year % 4 != 0)
+        return (false);
+    else if (year % 100 != 0)
+        return (true);
+    else if (year % 400 != 0)
+        return (false);
+    else
+        return (true);
 }
 
 bool    BitcoinExchange::isDateValid(std::string date)
 {
     int i = 0;
-    int y, m, d;
+    int m, d, y;
+    int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
-     if (date.length() != 10)
-        return false;
-
-    y = std::atoi(date.substr(0, 4).c_str());
-    m = std::atoi(date.substr(5, 2).c_str());
-    d = std::atoi(date.substr(8, 2).c_str());
-
-    if (m < 1 || m > 12 || d < 1)
-        return false;
-
-    int daysInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-
+    if(date.length() != 10)
+        return (false);
     if (date[4] != '-' || date[7] != '-')
         return (false);
     while(date[i])
@@ -112,11 +110,15 @@ bool    BitcoinExchange::isDateValid(std::string date)
         }
         i++;
     }
-    if (isLeapYear(y))
-        daysInMonth[1] = 29;
-    std::cout << daysInMonth[m - 1] << std::endl;
 
-    return (d <= daysInMonth[m - 1]);
+    y = std::atoi(date.substr(0, 4).c_str());
+    m = std::atoi(date.substr(5, 2).c_str());
+    d = std::atoi(date.substr(8, 2).c_str());
+    if(isLeapYear(y))
+        daysInMonth[1] = 29;
+    if (m < 1 || m > 12 || d < 1 || d > daysInMonth[m - 1] || y < 0)
+        return (false);
+    return (true);
 }
 
 bool    BitcoinExchange::isPriceValid(std::string price)
@@ -194,6 +196,11 @@ void    BitcoinExchange::run(std::string inputfile)
                 continue ;
             }
             line.erase(0, pos + delimiter.length());
+            if(line.empty() || line[0] != ' ')
+            {
+                std::cout << "Error: invalid value." << std::endl;
+                continue;
+            }
             price = line.substr(1);
             if(isPriceValid(price) == false)
                 continue ;
