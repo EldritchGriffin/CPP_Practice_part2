@@ -65,8 +65,7 @@ void    BitcoinExchange::readData()
             if(isDateValid(date) == false)
                 throw std::invalid_argument("Invalid date in data.csv");
             line.erase(0, pos + delimiter.length());
-            pos = line.find(delimiter);
-            price = line.substr(0, pos);
+            price = line.substr(0, line.length());
             if(price.empty() == true)
                 throw std::invalid_argument("Invalid price in data.csv");
             _data.insert(std::pair<std::string, double>(date, std::atof(price.c_str())));
@@ -83,12 +82,7 @@ bool    BitcoinExchange::isLeapYear(int year)
 {
     if (year % 4 != 0)
         return (false);
-    else if (year % 100 != 0)
-        return (true);
-    else if (year % 400 != 0)
-        return (false);
-    else
-        return (true);
+    return (true);
 }
 
 bool    BitcoinExchange::isDateValid(std::string date)
@@ -201,7 +195,7 @@ void    BitcoinExchange::run(std::string inputfile)
                 std::cout << "Error: invalid value." << std::endl;
                 continue;
             }
-            price = line.substr(1);
+            price = line.substr(1, line.length());
             if(isPriceValid(price) == false)
                 continue ;
             this->result(date, std::atof(price.c_str()));
