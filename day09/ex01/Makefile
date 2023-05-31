@@ -1,8 +1,8 @@
-SRC 	:= main.cpp BitcoinExchange.cpp
+SRC 	:= main.cpp RPN.cpp
 CC 		:= c++
 FLAG	:= -Wall -Werror -Wextra -std=c++98
-NAME 	:= btc
-HEADERS := BitcoinExchange.hpp
+NAME 	:= RPN
+HEADERS := RPN.hpp
 OBJ		:= $(SRC:%.cpp=%.o)
 
 all: $(NAME)

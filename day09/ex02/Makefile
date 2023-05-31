@@ -1,8 +1,8 @@
-SRC 	:= main.cpp BitcoinExchange.cpp
+SRC 	:= main.cpp PmergeMe.cpp
 CC 		:= c++
 FLAG	:= -Wall -Werror -Wextra -std=c++98
-NAME 	:= btc
-HEADERS := BitcoinExchange.hpp
+NAME 	:= PmergeMe
+HEADERS := PmergeMe.hpp
 OBJ		:= $(SRC:%.cpp=%.o)
 
 all: $(NAME)
