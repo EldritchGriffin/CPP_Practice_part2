@@ -12,28 +12,25 @@ PmergeMe & PmergeMe::operator=(PmergeMe const & rhs)
 	{
 		this->_vcSize = rhs._vcSize;
 		this->_dqSize = rhs._dqSize;
-		this->_startdq = rhs._startdq;
-		this->_enddq = rhs._enddq;
-		this->_startvc = rhs._startvc;
-		this->_endvc = rhs._endvc;
 	}
     return *this;
 }
 
 void	insertionSortVc(std::vector<int> &vc)
 {
-	unsigned long i = 1;
-	int j;
+	std::vector<int>::iterator i = vc.begin();
+	std::vector<int>::iterator ie = vc.end();
+	std::vector<int>::iterator j;
 	int tmp;
 
-	while (i < vc.size())
+	while (i < ie)
 	{
 		j = i;
-		while (j > 0 && vc[j - 1] > vc[j])
+		while (j > vc.begin() && *(j - 1) > *j)
 		{
-			tmp = vc[j];
-			vc[j] = vc[j - 1];
-			vc[j - 1] = tmp;
+			tmp = *j;
+			*j = *(j - 1);
+			*(j - 1) = tmp;
 			j--;
 		}
 		i++;
@@ -42,18 +39,19 @@ void	insertionSortVc(std::vector<int> &vc)
 
 void	insertionSortDq(std::deque<int> &dq)
 {
-	unsigned long i = 1;
-	int j;
+	std::deque<int>::iterator i = dq.begin();
+	std::deque<int>::iterator ie = dq.end();
+	std::deque<int>::iterator j;
 	int tmp;
 
-	while (i < dq.size())
+	while (i < ie)
 	{
 		j = i;
-		while (j > 0 && dq[j - 1] > dq[j])
+		while (j > dq.begin() && *(j - 1) > *j)
 		{
-			tmp = dq[j];
-			dq[j] = dq[j - 1];
-			dq[j - 1] = tmp;
+			tmp = *j;
+			*j = *(j - 1);
+			*(j - 1) = tmp;
 			j--;
 		}
 		i++;
@@ -62,42 +60,72 @@ void	insertionSortDq(std::deque<int> &dq)
 
 void	mergeDq(std::deque<int> &left, std::deque<int> &right, std::deque<int> &dq)
 {
-	unsigned long i = 0;
-	unsigned long j = 0;
-	unsigned long k = 0;
+	std::deque<int>::iterator i = left.begin();
+	std::deque<int>::iterator j = right.begin();
+	std::deque<int>::iterator k = dq.begin();
 
-	while (i < left.size() && j < right.size())
+	std::deque<int>::iterator ie = left.end();
+	std::deque<int>::iterator je = right.end();
+
+	while (i < ie && j < je)
 	{
-		if (left[i] < right[j])
-			dq[k] = left[i++];
+		if (*i < *j)
+		{
+			*k = *i;
+			i++;
+		}
 		else
-			dq[k] = right[j++];
+		{
+			*k = *j;
+			j++;
+		}
 		k++;
 	}
-	while (i < left.size())
-		dq[k++] = left[i++];
-	while (j < right.size())
-		dq[k++] = right[j++];
+	while (i < ie)
+	{
+		*k = *i;
+		i++;
+	}
+	while (j < je)
+	{
+		*k = *j;
+		j++;
+	}
 }
 
 void	mergeVc(std::vector<int> &left, std::vector<int> &right, std::vector<int> &vc)
 {
-	unsigned long i = 0;
-	unsigned long j = 0;
-	unsigned long k = 0;
+	std::vector<int>::iterator i = left.begin();
+	std::vector<int>::iterator j = right.begin();
+	std::vector<int>::iterator k = vc.begin();
 
-	while (i < left.size() && j < right.size())
+	std::vector<int>::iterator ie = left.end();
+	std::vector<int>::iterator je = right.end();
+
+	while (i < ie && j < je)
 	{
-		if (left[i] < right[j])
-			vc[k] = left[i++];
+		if (*i < *j)
+		{
+			*k = *i;
+			i++;
+		}
 		else
-			vc[k] = right[j++];
+		{
+			*k = *j;
+			j++;
+		}
 		k++;
 	}
-	while (i < left.size())
-		vc[k++] = left[i++];
-	while (j < right.size())
-		vc[k++] = right[j++];
+	while (i < ie)
+	{
+		*k = *i;
+		i++;
+	}
+	while (j < je)
+	{
+		*k = *j;
+		j++;
+	}
 }
 
 void	PmergeMe::mergeSortDq(std::deque<int> &dq)
@@ -108,7 +136,7 @@ void	PmergeMe::mergeSortDq(std::deque<int> &dq)
 
 	if (dq.size() <= 1)
 		return;
-	if(dq.size() <= this->_dqSize * 0.2)
+	if(dq.size() <= this->_dqSize * 0.2 || dq.size() <= 10)
 	{
 		insertionSortDq(dq);
 		return;
@@ -146,24 +174,9 @@ void	PmergeMe::mergeSortVc(std::vector<int> &vc)
 	mergeVc(left, right, vc);
 }
 
-void	PmergeMe::setStartdq(clock_t startdq) { _startdq = startdq; }
-
-void	PmergeMe::setEnddq(clock_t enddq) { _enddq = enddq; }
-
-void	PmergeMe::setStartvc(clock_t startvc) { _startvc = startvc; }
-
-void	PmergeMe::setEndvc(clock_t endvc) { _endvc = endvc; }
-
 void	PmergeMe::setVcSize(int vcSize) { _vcSize = vcSize; }
 
 void	PmergeMe::setDqSize(int dqSize) { _dqSize = dqSize; }
 
-clock_t	PmergeMe::getStartdq() const { return _startdq; }
-
-clock_t	PmergeMe::getEnddq() const { return _enddq; }
-
-clock_t	PmergeMe::getStartvc() const { return _startvc; }
-
-clock_t	PmergeMe::getEndvc() const { return _endvc; }
 
 

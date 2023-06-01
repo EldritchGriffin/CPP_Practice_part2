@@ -32,11 +32,10 @@ std::deque<int>    filldq(char **av)
     return dq;
 }
 
-void    printArgs(char  **av)
+void    checkArgs(char **av)
 {
     int i = 1;
     int j = 0;
-    std::cout << "Before: ";
     while(av[i])
     {
         j = 0;
@@ -46,6 +45,16 @@ void    printArgs(char  **av)
                 throw std::invalid_argument("Invalid argument");
             j++;
         }
+        i++;
+    }
+}
+
+void    printArgs(char **av)
+{
+    int i = 1;
+    std::cout << "Before: ";
+    while(av[i])
+    {
         std::cout << av[i] << " ";
         i++;
     }
@@ -62,6 +71,12 @@ void    printVc(std::vector<int> vc)
 
 int main(int ac, char **av)
 {
+    clock_t startvc;
+    clock_t endvc;
+    clock_t startdq;
+    clock_t enddq;
+
+
     if(ac == 1)
     {
         std::cout << "Usage: ./PmergeMe 1 2 3 4 5 6 7 8 9" << std::endl;
@@ -69,27 +84,28 @@ int main(int ac, char **av)
     }
     try
     {
+        checkArgs(av);
         printArgs(av);
 
         PmergeMe pm;
 
-        pm.setStartvc(clock());
+        startvc = clock();
         std::vector<int> vc = fillvc(av);
         pm.setVcSize(vc.size());
         pm.mergeSortVc(vc);
-        pm.setEndvc(clock());
+        endvc = clock();
         //------
-        pm.setStartdq(clock());
+        startdq = clock();
         std::deque<int> dq = filldq(av);
         pm.setDqSize(dq.size());
         pm.mergeSortDq(dq);
-        pm.setEnddq(clock());
+        enddq = clock();
         //------
         printVc(vc);
         std::cout << "Time to process a range of " << vc.size() << " elements with std::vector " << 
-        " elements: " << (double)(pm.getEndvc() - pm.getStartvc()) / 1000 << " us" << std::endl;
+        " elements: " << (double)(endvc - startvc) / (CLOCKS_PER_SEC / 1000) << " us" << std::endl;
         std::cout << "Time to process a range of " << dq.size() << " elements with std::deque " <<
-        " elements: " << (double)(pm.getEnddq() - pm.getStartdq()) / 1000 << " us" << std::endl;
+        " elements: " << (double)(enddq - startdq) / (CLOCKS_PER_SEC / 1000) << " us" << std::endl;
     }
     catch(const std::exception& e)
     {
