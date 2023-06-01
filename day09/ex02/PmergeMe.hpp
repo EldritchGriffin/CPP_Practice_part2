@@ -20,7 +20,6 @@ class PmergeMe
         clock_t _endvc;
     public:
         PmergeMe();
-        PmergeMe(int vcSize, int dqSize);
         PmergeMe(PmergeMe const & src);
         ~PmergeMe();
         PmergeMe & operator=(PmergeMe const & rhs);

@@ -2,12 +2,6 @@
 
 PmergeMe::PmergeMe(){}
 
-PmergeMe::PmergeMe(int vcSize, int dqSize)
-{
-	this->_vcSize = vcSize;
-	this->_dqSize = dqSize;
-}
-
 PmergeMe::PmergeMe(PmergeMe const & src) { *this = src; }
 
 PmergeMe::~PmergeMe() {}
